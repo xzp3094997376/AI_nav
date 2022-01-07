@@ -16,9 +16,15 @@ public class Test : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.A))
         {
-            foreach (var item in _mapGeneratorZh.mapObstract)
+            for (int i = 0; i < _mapGeneratorZh.mapObstract.GetLength(0); i++)
             {
-               
+                for (int j = 0; j < _mapGeneratorZh.mapObstract.GetLength(1); j++)
+                {
+                    if (i==0||j==0||i==100||j==100)
+                    {
+                        Debug.Log(i+",  "+j);
+                    }
+                }
             }
         }
     }
