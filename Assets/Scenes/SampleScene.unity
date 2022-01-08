@@ -151,6 +151,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mapGeneratorZh: {fileID: 1251103780}
+  isGoDiagonally: 0
 --- !u!4 &360548589
 Transform:
   m_ObjectHideFlags: 0
@@ -545,12 +546,12 @@ MonoBehaviour:
   _ObsPrefab: {fileID: 8958414458266840856, guid: 398c56055eb9ea34180467797de8ca8a,
     type: 3}
   _AllTilesCoords: []
-  _MapMaxSize: {x: 100, y: 100}
+  _MapMaxSize: {x: 50, y: 50}
   _NavMeshObs: {fileID: 461937545941778056, guid: 80b5a7b4e3f41ca448b3063963b9465c,
     type: 3}
   _Player: {fileID: 6992924157507975167, guid: b4e0a69d7e13d794faf6701cb513abe2, type: 3}
   _Maps:
-  - _MapSize: {x: 100, y: 100}
+  - _MapSize: {x: 50, y: 50}
     _ObsPercent: 0.922
     _Seed: 5
     _MinObsHeight: 0.5
