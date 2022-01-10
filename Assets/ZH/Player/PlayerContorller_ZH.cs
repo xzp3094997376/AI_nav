@@ -80,6 +80,8 @@ public class PlayerContorller_ZH : MonoBehaviour
                 _TragetVecAI = _CameraHit.point;
                 //目标路径存储
                 _PalyerAI.SetDestination(_CameraHit.point);
+
+               
             }
 
         }
@@ -87,11 +89,20 @@ public class PlayerContorller_ZH : MonoBehaviour
         //如果当前AI 有目标点
         if (_PalyerAI.hasPath)
         {
+            if (Input.GetKeyDown(KeyCode.P))
+            {
+                foreach (Vector3 pos in _PalyerAI.path.corners)
+                {
+                    Debug.Log(pos);
+                }
+            }
+         
             //判断当前AI 与目标点之间的 直线距离 如果小于 0.1f 
             if (Vector3.Distance(_TragetVecAI,transform.position)<=0.1f)
             {
                 //设置当前AI 目标路径为 Null
                 _PalyerAI.path = null;
+             
             }
         }
     }

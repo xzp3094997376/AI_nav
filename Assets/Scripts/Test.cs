@@ -1,9 +1,12 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine.AI;
+using System.Threading;
+using System.Threading.Tasks;
 
 public class Test : MonoBehaviour
 {
@@ -18,8 +21,6 @@ public class Test : MonoBehaviour
     // Start is called before the first frame update
     IEnumerator StartAstar()
     {
-       
-
         aStar=new AStar(); 
         gridListDes.Clear();
         InitMap();
@@ -43,6 +44,65 @@ public class Test : MonoBehaviour
         PathShow();
         
     }
+
+
+    public async void FindPathAsyc()
+    {
+        await Task.Run(() =>
+        {
+            ThreadSart();
+        });
+    }
+
+    async void ThreadSart()
+    {
+        gridListDes.Clear();
+        InitMap();
+      
+        //return;
+        Int2 maxSize = new Int2((int)_mapGeneratorZh._MapMaxSize.x, (int)_mapGeneratorZh._MapMaxSize.y);
+        Int2 player = new Int2(Mathf.RoundToInt(_mapGeneratorZh._MapMaxSize.x / 2f/*+0.5f*/), Mathf.CeilToInt(_mapGeneratorZh._MapMaxSize.y / 2f/*+0.5f*/));
+        Debug.Log(player.ToString());
+        Debug.Log("总共出口数 ：" + gridListDes.Count);
+
+        DateTime start= DateTime.Now;
+        List<Task> taskList=new List<Task>();
+        for (int i = 0; i < gridListDes.Count; i++)
+        {
+            Int2 destination = gridListDes[i].position;
+
+            taskList.Add(Task.Run(() =>
+            {
+                aStar = new AStar();
+                isGoDiagonally = aStar.isGoDiagonally;
+                aStar.Init(maxSize, player, destination, EvaluationFunctionType.Diagonal);
+                aStar.m_map = xmap.grid;
+                aStar.ThreadStart();
+                Debug.Log("线程执行完毕");
+            }));
+        }
+
+        await Task.Run(() =>
+        {
+            Task.WaitAll(taskList.ToArray());
+
+            DateTime endTime = DateTime.Now;
+            int num = GetTimeSpanSeconds(start, endTime);
+            Debug.Log($"线程已执行完毕，用时：{num}s");
+            PathShow();
+        });
+
+        
+    }
+    
+    int GetTimeSpanSeconds(DateTime startTime, DateTime endTime)
+    {
+        TimeSpan ts = endTime.Subtract(startTime);
+        int sec = (int)ts.TotalSeconds;
+        return sec;
+    }
+
+
 
     private XMap xmap;
     private Grid leftDown, leftUp, RightDown, rightUp;
@@ -130,12 +190,20 @@ public class Test : MonoBehaviour
         }
 
     }
+
+    //波算法-》扩散
     // Update is called once per frame
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.F))
         {
             StartCoroutine(StartAstar());
+        }
+
+        if (Input.GetKeyDown(KeyCode.T))
+        { 
+            Debug.Log("线程寻路");
+            FindPathAsyc();
         }
     }
 }

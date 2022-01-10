@@ -47,7 +47,29 @@ public class AStar {
         AddNodeInOpenQueue(new Node(m_player, null, 0, 0));
         m_isInit = true;
     }
-    
+
+
+    public void ThreadStart()
+    {
+        while (m_openDic.Count > 0 && m_destinationNode == null)
+        {
+            //按照f的值升序排列
+            m_openDic = m_openDic.OrderBy(kv => kv.Value.f).ToDictionary(p => p.Key, o => o.Value);
+            //提取排序后的第一个节点
+            Node node = m_openDic.First().Value;
+            //因为使用的不是Queue，因此要从open中手动删除该节点
+            m_openDic.Remove(node.position);
+            //处理该节点相邻的节点
+            OperateNeighborNode(node);
+            //处理完后将该节点加入close中
+            AddNodeInCloseDic(node);
+            //yield return null;
+        }
+        if (m_destinationNode == null)
+            Debug.LogError("找不到可用路径");
+        else
+            ShowPath(m_destinationNode);
+    }
 
     //计算寻路
     public IEnumerator Start() {
@@ -137,7 +159,11 @@ public class AStar {
 
     //加入close中，并更新网格状态
     void AddNodeInCloseDic(Node node) {
-        m_closeDic.Add(node.position, node);
+        if (!m_closeDic.ContainsKey(node.position))
+        {
+            m_closeDic.Add(node.position, node);
+        }
+       
     }
 
     //寻路完成，显示路径
