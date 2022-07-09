@@ -546,16 +546,16 @@ MonoBehaviour:
   _ObsPrefab: {fileID: 8958414458266840856, guid: 398c56055eb9ea34180467797de8ca8a,
     type: 3}
   _AllTilesCoords: []
-  _MapMaxSize: {x: 10, y: 10}
+  _MapMaxSize: {x: 100, y: 100}
   _NavMeshObs: {fileID: 461937545941778056, guid: 80b5a7b4e3f41ca448b3063963b9465c,
     type: 3}
   _Player: {fileID: 6992924157507975167, guid: b4e0a69d7e13d794faf6701cb513abe2, type: 3}
   _Maps:
-  - _MapSize: {x: 10, y: 10}
+  - _MapSize: {x: 100, y: 100}
     _ObsPercent: 0.922
     _Seed: 5
-    _MinObsHeight: 0.5
-    _MaxObsHeight: 5
+    _MinObsHeight: 0.1
+    _MaxObsHeight: 0.2
     _ForegroundColor: {r: 0, g: 1, b: 0.80855703, a: 1}
     _BackgroundColor: {r: 0, g: 0.51428366, b: 1, a: 1}
   _MapIndex: 0

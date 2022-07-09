@@ -132,6 +132,7 @@ public class AStar {
         if(m_openDic.ContainsKey(position)) {
             //比较实际距离g的值，用更小的值替换
             if(nodeG < m_openDic[position].g) {
+                Debug.LogError("123");
                 m_openDic[position].g = nodeG;
                 m_openDic[position].parent = parentNode;
                 ShowOrUpdateAStarHint(m_openDic[position]);

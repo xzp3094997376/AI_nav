@@ -79,20 +79,17 @@ public class Test : MonoBehaviour
                 aStar.m_map = xmap.grid;
                 aStar.ThreadStart();
                 Debug.Log("线程执行完毕");
+               
             }));
         }
-
-        await Task.Run(() =>
-        {
-            Task.WaitAll(taskList.ToArray());
-
-            DateTime endTime = DateTime.Now;
-            int num = GetTimeSpanSeconds(start, endTime);
-            Debug.Log($"线程已执行完毕，用时：{num}s");
-            PathShow();
-        });
-
         
+        await Task.WhenAll(taskList.ToArray());
+        DateTime endTime = DateTime.Now;
+        int num = GetTimeSpanSeconds(start, endTime);
+        Debug.Log($"线程已执行完毕，用时：{num}s");
+        PathShow();
+
+
     }
     
     int GetTimeSpanSeconds(DateTime startTime, DateTime endTime)
